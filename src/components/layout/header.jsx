@@ -23,7 +23,7 @@ const Header = () => {
           : 'backdrop-blur-md bg-black/40 border-b border-white/10'
       }`}
     >
-      <nav className='mx-auto max-w-7xl flex items-center justify-between py-4'>
+      <nav className=' mx-4 lg:mx-auto  max-w-7xl flex items-center justify-between py-4'>
         <Link
           href='/'
           className='flex items-center gap-2.5 no-underline text-white shrink-0'

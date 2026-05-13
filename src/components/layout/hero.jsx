@@ -15,6 +15,37 @@ const CARD_HEIGHT = 460;
 
 const Hero = () => {
   const [hovered, setHovered] = useState(null);
+  const [dims, setDims] = useState({
+    w: CARD_WIDTH,
+    h: CARD_HEIGHT,
+    p: CARD_PEEK,
+  });
+
+  React.useEffect(() => {
+    const update = () => {
+      const width = window.innerWidth;
+      if (width < 640) {
+        const cardW = width - 48;
+        setDims({
+          w: cardW,
+          h: (cardW * CARD_HEIGHT) / CARD_WIDTH,
+          p: 15,
+        });
+      } else if (width < 1024) {
+        const cardW = Math.min(width - 100, 600);
+        setDims({
+          w: cardW,
+          h: (cardW * CARD_HEIGHT) / CARD_WIDTH,
+          p: 40,
+        });
+      } else {
+        setDims({ w: CARD_WIDTH, h: CARD_HEIGHT, p: CARD_PEEK });
+      }
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
   return (
     <section className='relative overflow-hidden py-12 md:py-24 mx-auto max-w-7xl'>
@@ -27,14 +58,14 @@ const Hero = () => {
         }}
       />
 
-      <div className='relative z-10 text-start mt-28'>
+      <div className='relative z-10 text-start mx-4 lg:mx-0 mt-20 md:mt-28'>
         <h1 className='font-semibold leading-[1.05] tracking-[-0.04em] text-white mb-6 max-w-3xl'>
           <span className='block text-[clamp(24px,6.5vw,48px)]'>
             Built to help you think faster during high-pressure interviews.
           </span>
         </h1>
 
-        <div className='flex items-end justify-between gap-4'>
+        <div className='flex flex-col lg:flex-row lg:items-end items-start justify-between gap-6 md:gap-4'>
           <p className='text-[clamp(10px,1.8vw,16px)] leading-relaxed text-white/45 max-w-3xl font-normal tracking-[-0.01em]'>
             From coding challenges to system design questions, the app listens,
             analyzes, and responds instantly through a private on-screen
@@ -51,17 +82,17 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className='relative mt-20 flex flex-col items-center'>
+      <div className='relative mx-4 lg:mx-0 mt-12 md:mt-20 flex flex-col items-center'>
         <div
           className='relative max-w-full'
           style={{
-            width: CARD_WIDTH + (CARDS.length - 1) * CARD_PEEK,
-            height: CARD_HEIGHT + 60,
+            width: dims.w + (CARDS.length - 1) * dims.p,
+            height: dims.h + 60,
           }}
         >
           {CARDS.map((card, index) => {
             const isHov = hovered === index;
-            const offsetX = index * CARD_PEEK;
+            const offsetX = index * dims.p;
 
             return (
               <div
@@ -78,10 +109,10 @@ const Hero = () => {
                 onMouseLeave={() => setHovered(null)}
               >
                 <div
-                  className='relative overflow-hidden rounded-[20px] bg-[#0a0a0a] transition-[box-shadow,border-color] duration-400 ease-out'
+                  className='relative overflow-hidden rounded-[12px] md:rounded-[20px] bg-[#0a0a0a] transition-[box-shadow,border-color] duration-400 ease-out'
                   style={{
-                    width: CARD_WIDTH,
-                    height: CARD_HEIGHT,
+                    width: dims.w,
+                    height: dims.h,
                     border: isHov
                       ? `1.5px solid ${card.accent}55`
                       : '1px solid rgba(255,255,255,0.07)',
