@@ -1,226 +1,332 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
-  ArrowRight,
-  ShieldCheck,
-  LayoutDashboard,
-  Ghost,
-  ChevronDown,
-} from 'lucide-react';
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+  useSpring,
+  useMotionValueEvent,
+} from 'framer-motion';
+import { ShieldCheck, LayoutDashboard, Ghost, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-const LayerCard = ({
-  step,
-  icon: Icon,
-  title,
-  badge,
-  description,
-  bullets,
-  imageSrc,
-  imageAlt,
-  isOpen,
-  onToggle,
-  isLast,
-}) => {
-  return (
-    <div className='relative flex gap-6'>
-      <div className='relative flex flex-col items-center'>
-        <button
-          onClick={onToggle}
-          className={cn(
-            'relative z-10 flex size-11 shrink-0 items-center justify-center rounded-xl border transition-all duration-300 cursor-pointer',
-            isOpen
-              ? 'border-white/20 bg-white/10 text-white shadow-[0_0_20px_rgba(255,255,255,0.06)]'
-              : 'border-white/8 bg-white/3 text-white/30 hover:border-white/15 hover:bg-white/6 hover:text-white/50',
-          )}
-        >
-          <Icon className='size-5' />
-        </button>
 
-        {!isLast && (
-          <div
-            className={cn(
-              'w-px flex-1 transition-colors duration-300',
-              isOpen
-                ? 'bg-linear-to-b from-white/15 to-transparent'
-                : 'bg-white/6',
-            )}
-          />
-        )}
-      </div>
+const FEATURES = [
+  {
+    step: '01',
+    title: 'The Secure Entry',
+    badge: 'ID Badge',
+    description:
+      'Before the app even starts, it requires a secure login — ensuring only the authorized user can access their personal interview settings and credits. Hardware fingerprinting verifies the specific machine, so your account can never be shared or misused.',
+    bullets: [
+      'Secure credential-based login',
+      'Hardware fingerprint verification',
+      'Account sharing prevention',
+    ],
+    image: '/images/interview-1.png',
+    icon: ShieldCheck,
+    color: '#a78bfa',
+  },
+  {
+    step: '02',
+    title: 'Setting the Stage',
+    badge: 'Dashboard',
+    description:
+      'Once inside, the Command Center lets you configure everything before the interview starts. Pick your target role, dial in the exact technologies the interviewer will ask about, and choose how you want the AI to assist — automatic or on-demand.',
+    bullets: [
+      'Role picker — Senior Dev, Lead Manager, and more',
+      'Tech stack targeting (React Native, Python, etc.)',
+      'Auto-answer or manual trigger mode',
+    ],
+    image: '/images/interview-2.png',
+    icon: LayoutDashboard,
+    color: '#8b5cf6',
+  },
+  {
+    step: '03',
+    title: 'The Ghost Companion',
+    badge: 'Overlay',
+    description:
+      'During the interview, a transparent overlay appears on your screen — completely invisible to anyone watching via Zoom or Teams. It listens in real-time, transcribes every word, and surfaces the perfect answer with bullet-point summaries and detailed explanations.',
+    bullets: [
+      'Screen-capture invisible overlay',
+      'Real-time voice transcription & instant AI answers',
+      'Screenshot-to-solution with a single shortcut key',
+    ],
+    image: '/images/interview-3.png',
+    icon: Ghost,
+    color: '#7c3aed',
+  },
+];
 
-      <div className='flex-1 pb-12'>
-        <button
-          onClick={onToggle}
-          className='group flex w-full cursor-pointer items-center gap-3 text-left'
-        >
-          <div className='flex-1'>
-            <div className='flex items-center gap-3'>
-              <span
-                className={cn(
-                  'font-mono text-xs tracking-widest transition-colors',
-                  isOpen ? 'text-white/30' : 'text-white/15',
-                )}
-              >
-                0{step}
-              </span>
-              <span
-                className={cn(
-                  'rounded-full border px-2.5 py-0.5 text-[10px] tracking-widest uppercase transition-colors',
-                  isOpen
-                    ? 'border-white/15 text-white/45'
-                    : 'border-white/6 text-white/20',
-                )}
-              >
-                {badge}
-              </span>
-            </div>
-            <h3
-              className={cn(
-                'mt-1.5 text-xl font-semibold tracking-tight transition-colors md:text-2xl',
-                isOpen ? 'text-white' : 'text-white/35',
-              )}
-            >
-              {title}
-            </h3>
-          </div>
-
-          <ChevronDown
-            className={cn(
-              'size-4 shrink-0 transition-all duration-300',
-              isOpen
-                ? 'rotate-180 text-white/40'
-                : 'rotate-0 text-white/15 group-hover:text-white/30',
-            )}
-          />
-        </button>
-
-        <div
-          className={cn(
-            'grid transition-all duration-500 ease-in-out',
-            isOpen
-              ? 'grid-rows-[1fr] opacity-100'
-              : 'grid-rows-[0fr] opacity-0',
-          )}
-        >
-          <div className='overflow-hidden'>
-            <p className='mt-4 max-w-xl text-sm leading-relaxed text-white/45 md:text-base md:leading-relaxed'>
-              {description}
-            </p>
-
-            <ul className='mt-5 space-y-2.5'>
-              {bullets.map((bullet, i) => (
-                <li
-                  key={i}
-                  className='flex items-start gap-2.5 text-sm text-white/40'
-                >
-                  <span className='mt-2 size-1 shrink-0 rounded-full bg-white/25' />
-                  {bullet}
-                </li>
-              ))}
-            </ul>
-
-            <div className='mt-6 overflow-hidden rounded-xl border border-white/8 bg-white/3'>
-              <div className='relative aspect-video'>
-                <img
-                  src={imageSrc}
-                  alt={imageAlt}
-                  className='h-full w-full object-cover'
-                />
-                <div className='absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent' />
-                <div className='absolute bottom-3 left-3 flex items-center gap-2 rounded-full border border-white/10 bg-black/60 px-3 py-1 backdrop-blur-md'>
-                  <span className='size-1.5 rounded-full bg-emerald-400 animate-pulse' />
-                  <span className='text-xs text-white/60'>{badge}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+const SECTION_VH = FEATURES.length * 75 + 50;
+const GRID_VH = FEATURES.length * 75;
+const N = FEATURES.length;
 
 const Feature = ({ className }) => {
-  const [openLayer, setOpenLayer] = useState(1);
+  const containerRef = useRef(null);
+  const [active, setActive] = useState(0);
+  const { scrollYProgress: rawProgress } = useScroll({
+    target: containerRef,
+    offset: ['start 40%', 'end 70%'],
+  });
 
-  const toggle = (step) =>
-    setOpenLayer((prev) => (prev === step ? null : step));
+  const scrollYProgress = useSpring(rawProgress, {
+    damping: 30,
+    stiffness: 200,
+    restDelta: 0.001,
+  });
+
+  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+    const idx = Math.min(N - 1, Math.max(0, Math.floor(latest * N)));
+    setActive(idx);
+  });
+
+  // FIX 4: Per-feature progress bar heights as MotionValues, NOT React state.
+  // These pipe directly into style.height, bypassing React's render cycle entirely.
+  // The old approach called setProgress on every scroll frame → re-render → new
+  // animate value → Framer Motion restarts a 0.1s animation → stutter.
+  // Now: zero React re-renders for bar fill. Must be declared at top-level (no map).
+  const bar0 = useTransform(scrollYProgress, [0 / N, 1 / N], ['0%', '100%']);
+  const bar1 = useTransform(scrollYProgress, [1 / N, 2 / N], ['0%', '100%']);
+  const bar2 = useTransform(scrollYProgress, [2 / N, 3 / N], ['0%', '100%']);
+  const featureBars = [bar0, bar1, bar2];
+
+  // Card entrance animations (desktop sticky panel)
+  const cardX = useTransform(scrollYProgress, [0, 0.45], ['120px', '0px']);
+  const cardY = useTransform(scrollYProgress, [0, 1], ['60px', '-60px']);
+  const cardRotate = useTransform(scrollYProgress, [0, 0.45], [3, 0]);
 
   return (
     <section
-      className={cn(
-        'relative overflow-hidden px-6 py-12 mx-auto max-w-7xl md:py-24',
-        className,
-      )}
+      ref={containerRef}
+      className={cn('relative bg-black px-6 text-white border-t border-white/6 ', className)}
+      style={{ minHeight: `${SECTION_VH}vh` }}
     >
-      <div className='mx-auto text-start max-w-7xl'>
-        <div className='mb-12 lg:mb-16'>
-          <p className='mb-3 text-sm font-medium tracking-widest text-white/40 uppercase'>
-            How it works
+      <div className="mx-auto max-w-7xl pt-32 pb-0">
+        <div className="mb-24 text-start">
+          <p className="mb-4 text-xs font-semibold tracking-[0.2em] text-white/30 uppercase">
+            The Infrastructure
           </p>
-          <h2 className='mb-4 text-3xl font-semibold tracking-tight text-balance text-white md:text-4xl lg:text-5xl'>
-            Your unfair advantage,{' '}
-            <span className='text-white/50'>built in three layers</span>
+          <h2 className="text-4xl font-medium tracking-tight text-white md:text-5xl lg:text-6xl leading-[1.15]">
+            Your unfair advantage, <br />
+            <span className="text-white/40 font-normal">built in three layers</span>
           </h2>
-          <p className='max-w-2xl text-white/40 lg:text-lg'>
-            From secure login to a ghost overlay only you can see — every layer
-            is designed to keep you calm, sharp, and one step ahead.
-          </p>
         </div>
 
-        <div className='relative'>
-          <LayerCard
-            step={1}
-            icon={ShieldCheck}
-            title='The Secure Entry'
-            badge='ID Badge'
-            description='Before the app even starts, it requires a secure login — ensuring only the authorized user can access their personal interview settings and credits. Hardware fingerprinting verifies the specific machine, so your account can never be shared or misused.'
-            bullets={[
-              'Secure credential-based login',
-              'Hardware fingerprint verification',
-              'Account sharing prevention',
-            ]}
-            imageSrc='/images/feature-login.png'
-            imageAlt='Secure login screen'
-            isOpen={openLayer === 1}
-            onToggle={() => toggle(1)}
-            isLast={false}
-          />
-          <LayerCard
-            step={2}
-            icon={LayoutDashboard}
-            title='Setting the Stage'
-            badge='Dashboard'
-            description='Once inside, the Command Center lets you configure everything before the interview starts. Pick your target role, dial in the exact technologies the interviewer will ask about, and choose how you want the AI to assist — automatic or on-demand.'
-            bullets={[
-              'Role picker — Senior Dev, Lead Manager, and more',
-              'Tech stack targeting (React Native, Python, etc.)',
-              'Auto-answer or manual trigger mode',
-            ]}
-            imageSrc='/images/feature-dashboard.png'
-            imageAlt='Interview command center dashboard'
-            isOpen={openLayer === 2}
-            onToggle={() => toggle(2)}
-            isLast={false}
-          />
-          <LayerCard
-            step={3}
-            icon={Ghost}
-            title='The Ghost Companion'
-            badge='Overlay'
-            description='During the interview, a transparent overlay appears on your screen — completely invisible to anyone watching via Zoom or Teams. It listens in real-time, transcribes every word, and surfaces the perfect answer with bullet-point summaries and detailed explanations.'
-            bullets={[
-              'Screen-capture invisible overlay',
-              'Real-time voice transcription & instant AI answers',
-              'Screenshot-to-solution with a single shortcut key',
-            ]}
-            imageSrc='/images/feature-overlay.png'
-            imageAlt='Transparent overlay during interview'
-            isOpen={openLayer === 3}
-            onToggle={() => toggle(3)}
-            isLast={true}
-          />
+        <div
+          className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24"
+          style={{ minHeight: `${GRID_VH}vh` }}
+        >
+          {/* ── Left: Feature list ── */}
+          <div className="flex flex-col h-full">
+            {FEATURES.map((feature, i) => {
+              const isActive = active === i;
+              const isPast = i < active;
+
+              return (
+                <div
+                  key={i}
+                  className={cn(
+                    'relative flex flex-1 gap-6 py-12 transition-all duration-500 cursor-pointer',
+                    i < FEATURES.length - 1 && 'border-b border-white/6'
+                  )}
+                  onClick={() => {
+                    if (containerRef.current) {
+                      const sectionTop =
+                        containerRef.current.getBoundingClientRect().top + window.scrollY;
+                      const sectionHeight = containerRef.current.offsetHeight;
+                      const targetScroll =
+                        sectionTop +
+                        (i / N) * (sectionHeight - window.innerHeight * 0.3);
+                      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  {/* Progress bar column */}
+                  <div className="relative flex flex-col items-center shrink-0 w-[2px]">
+                    <div className="absolute inset-0 w-full rounded-full bg-white/5" />
+
+                    {/* FIX 4 cont'd: height driven by MotionValue via style, not animate */}
+                    <motion.div
+                      className="absolute top-0 left-0 w-full rounded-full origin-top"
+                      style={{
+                        backgroundColor: feature.color,
+                        height: featureBars[i],
+                      }}
+                      animate={{ opacity: isPast || isActive ? 1 : 0 }}
+                      transition={{ opacity: { duration: 0.3 } }}
+                    />
+
+                    <motion.div
+                      className="relative z-10 mt-2 size-2 rounded-full border"
+                      animate={{
+                        borderColor:
+                          isActive || isPast ? feature.color : 'rgba(255,255,255,0.12)',
+                        backgroundColor:
+                          isActive || isPast ? feature.color : 'rgba(0,0,0,0)',
+                        scale: isActive ? 1.2 : 1,
+                      }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </div>
+
+                  {/* Feature text */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div
+                        className={cn(
+                          'flex size-8 items-center justify-center rounded-lg border transition-all duration-500',
+                          isActive ? 'border-white/10' : 'border-white/4'
+                        )}
+                        style={{
+                          backgroundColor: isActive
+                            ? `${feature.color}08`
+                            : 'rgba(0,0,0,0)',
+                        }}
+                      >
+                        <feature.icon
+                          className="size-3.5 transition-colors duration-500"
+                          style={{
+                            color: isActive ? feature.color : 'rgba(255,255,255,0.15)',
+                          }}
+                        />
+                      </div>
+                      <span
+                        className={cn(
+                          'font-mono text-[10px] tracking-widest transition-colors duration-500',
+                          isActive ? 'text-white/45' : 'text-white/15'
+                        )}
+                      >
+                        LAYER {feature.step}
+                      </span>
+                    </div>
+
+                    <h3
+                      className={cn(
+                        'text-xl md:text-2xl font-semibold tracking-tight transition-colors duration-500 mb-3',
+                        isActive ? 'text-white' : 'text-white/15'
+                      )}
+                    >
+                      {feature.title}
+                    </h3>
+
+                    <AnimatePresence mode="wait">
+                      {isActive && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                          className="overflow-hidden"
+                        >
+                          <p className="text-sm leading-relaxed text-white/40 mb-6 max-w-lg">
+                            {feature.description}
+                          </p>
+                          <ul className="space-y-3 mb-5">
+                            {feature.bullets.map((bullet, bi) => (
+                              <motion.li
+                                key={bi}
+                                initial={{ opacity: 0, x: -6 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.3, delay: bi * 0.06 }}
+                                className="flex items-center gap-3 text-xs text-white/35"
+                              >
+                                <div
+                                  className="size-1 rounded-full shrink-0"
+                                  style={{ backgroundColor: `${feature.color}60` }}
+                                />
+                                {bullet}
+                              </motion.li>
+                            ))}
+                          </ul>
+                          <div className="flex items-center gap-1.5 text-xs font-medium text-white/40 group/link cursor-pointer hover:text-white/60 transition-colors w-fit">
+                            <span>Learn more about {feature.badge.toLowerCase()}</span>
+                            <ChevronRight className="size-3 transition-transform group-hover/link:translate-x-0.5" />
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* ── Right: Sticky image card (desktop) ── */}
+          <div className="relative hidden lg:block">
+            <div className="sticky top-32">
+              <motion.div
+                style={{ x: cardX, y: cardY, rotate: cardRotate, transformOrigin: 'center center' }}
+                className="overflow-hidden rounded-2xl border border-white/6 bg-[#0a0a0a]"
+              >
+                <div className="relative h-[550px] w-full overflow-hidden">
+                  {/* FIX 5: Removed mode="wait" so images crossfade instead of
+                      sequencing (exit fully → then enter). Also dropped the scale
+                      transform which compounded the jank. Plain opacity crossfade. */}
+                  <AnimatePresence>
+                    <motion.img
+                      key={FEATURES[active].image}
+                      src={FEATURES[active].image}
+                      alt={FEATURES[active].title}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4, ease: 'easeInOut' }}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      draggable={false}
+                    />
+                  </AnimatePresence>
+
+                  <div className="absolute bottom-6 left-6 pointer-events-none">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={active}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/8 bg-black/60 backdrop-blur-md"
+                      >
+                        <div
+                          className="flex size-5 items-center justify-center rounded-full"
+                          style={{ backgroundColor: `${FEATURES[active].color}12` }}
+                        >
+                          {React.createElement(FEATURES[active].icon, {
+                            className: 'size-3',
+                            style: { color: FEATURES[active].color },
+                          })}
+                        </div>
+                        <span className="text-white/80 text-[11px] font-medium tracking-tight">
+                          {FEATURES[active].badge}
+                        </span>
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* ── Mobile image ── */}
+          <div className="lg:hidden relative overflow-hidden rounded-xl border border-white/6 bg-[#0a0a0a]">
+            <div className="relative h-[280px] sm:h-[350px] w-full overflow-hidden">
+              <AnimatePresence>
+                <motion.img
+                  key={FEATURES[active].image}
+                  src={FEATURES[active].image}
+                  alt={FEATURES[active].title}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4, ease: 'easeInOut' }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  draggable={false}
+                />
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
       </div>
     </section>

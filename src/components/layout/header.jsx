@@ -17,43 +17,45 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky top-0 left-0 right-0 z-100 transition-all duration-300 ease-in-out ${
-        scrolled
-          ? 'backdrop-blur-[20px] backdrop-saturate-180 bg-black/40 border-b border-white/15'
-          : 'backdrop-blur-md bg-black/40 border-b border-white/10'
-      }`}
+      className={`sticky top-0 left-0 right-0 z-[100] transition-all duration-300 ease-in-out ${scrolled
+          ? 'backdrop-blur-md bg-black/75 border-b border-white/[0.06]'
+          : 'bg-transparent border-b border-transparent'
+        }`}
     >
-      <nav className=' mx-4 lg:mx-auto  max-w-7xl flex items-center justify-between py-4'>
+      <nav className='mx-6 lg:mx-auto max-w-7xl flex items-center justify-between py-5'>
         <Link
           href='/'
           className='flex items-center gap-2.5 no-underline text-white shrink-0'
         >
-          <span className='text-base font-semibold tracking-[-0.02em]'>
+          <span className='text-sm font-medium tracking-tight'>
             GhostInterview
           </span>
         </Link>
-        <div className='hidden md:flex items-center gap-6 text-[13px]'>
-          {['Product', 'Features', 'Pricing', 'Resources', 'About'].map(
-            (item) => (
-              <Link
-                key={item}
-                href={`/${item.toLowerCase()}`}
-                className='text-white/55 no-underline font-normal tracking-[-0.01em] transition-colors duration-200 hover:text-white'
-              >
-                {item}
-              </Link>
-            ),
-          )}
-          <div className='w-px h-[18px] bg-white/12' />
+        <div className='hidden md:flex items-center gap-8 text-[13px]'>
+          {[
+            { label: 'Features', href: '/features' },
+            { label: 'Pricing', href: '/pricing' },
+            { label: 'Resources', href: '/resources' },
+            { label: 'About', href: '/about' },
+          ].map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className='text-white/45 no-underline font-normal transition-colors duration-200 hover:text-white'
+            >
+              {item.label}
+            </Link>
+          ))}
+          <div className='w-px h-3.5 bg-white/10' />
           <Link
             href='/login'
-            className='text-white/55 no-underline font-normal  rounded-full transition-colors duration-200 hover:text-white'
+            className='text-white/45 no-underline font-normal transition-colors duration-200 hover:text-white'
           >
             Log in
           </Link>
           <Link
             href='/signup'
-            className='bg-white text-black no-underline font-medium py-1.5 px-[18px] rounded-full tracking-[-0.01em] transition-all duration-200 hover:bg-white/85'
+            className='bg-[#8b5cf6] text-white no-underline font-medium py-1.5 px-4 rounded-full transition-all duration-200 hover:bg-[#7c3aed]'
           >
             Sign up
           </Link>
@@ -89,7 +91,6 @@ const Header = () => {
         </button>
       </nav>
 
-      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className='md:hidden flex flex-col gap-1 pt-3 px-6 pb-6 bg-black/95 border-t border-white/6'>
           {['Product', 'Features', 'Pricing', 'Resources', 'About'].map(
