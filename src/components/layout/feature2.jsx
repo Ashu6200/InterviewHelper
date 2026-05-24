@@ -18,6 +18,7 @@ import {
     Zap,
     Eye,
 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 const PLATFORMS = [
     {
@@ -27,7 +28,7 @@ const PLATFORMS = [
         icon: Video,
         title: 'Built for modern remote interviews',
         description:
-            'GhostInterview integrates directly into Google Meet sessions with instant AI-assisted interview support.',
+            'GhostInterview integrates seamlessly with Google Meet to deliver real-time AI-powered interview assistance, helping candidates respond confidently during technical, behavioral, and system design discussions without interrupting the interview flow.',
     },
     {
         label: 'Zoom',
@@ -36,7 +37,7 @@ const PLATFORMS = [
         icon: Monitor,
         title: 'Ultra-fast response generation',
         description:
-            'Get real-time contextual answers with near-zero latency during technical and behavioral interviews.',
+            'Generate highly contextual answers instantly with low-latency AI support designed for live Zoom interviews, enabling smoother communication, faster thinking, and improved performance under pressure.',
     },
     {
         label: 'Microsoft Teams',
@@ -45,7 +46,7 @@ const PLATFORMS = [
         icon: Users,
         title: 'Enterprise ready compatibility',
         description:
-            'Works seamlessly with Microsoft Teams for enterprise recruiting environments and remote hiring.',
+            'Optimized for Microsoft Teams environments, GhostInterview supports enterprise-level remote hiring workflows with reliable AI assistance tailored for professional recruiting and corporate interview processes.',
     },
     {
         label: 'Webex',
@@ -54,7 +55,7 @@ const PLATFORMS = [
         icon: Presentation,
         title: 'Invisible interview assistance',
         description:
-            'Undetectable overlay architecture designed for smooth interview experiences across Webex meetings.',
+            'Designed with a distraction-free overlay system, GhostInterview provides subtle and undetectable AI guidance during Webex meetings, ensuring a natural interview experience while maintaining candidate focus and confidence.',
     },
 ];
 
@@ -127,27 +128,13 @@ const PlatformStory = () => {
     const [current, setCurrent] = useState(0);
     const count = PLATFORMS.length;
 
-    /*
-     * FIX 1 — correct scroll offset.
-     * 'end start' means progress hits 1.0 when the *bottom* of the
-     * section reaches the *top* of the viewport, so the entire
-     * 400 vh of content drives the animation before it scrolls away.
-     * The original 'end end' fired too early, cutting off the last platform.
-     */
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ['start start', 'end start'],
     });
 
-    /*
-     * FIX 2 — evenly distribute scroll range across all platforms.
-     * Each platform gets an equal 1/count slice of scroll progress.
-     * The last input value stops slightly before 1.0 so the final
-     * platform has a full dwell period rather than a single frame.
-     */
     const segmentSize = 1 / count;
     const inputRange = PLATFORMS.map((_, i) => i * segmentSize);
-    // Cap the last output at count - 1 (not count) so it never rounds up.
     const outputRange = PLATFORMS.map((_, i) => i);
 
     const activeIndex = useTransform(scrollYProgress, inputRange, outputRange, {
@@ -156,27 +143,14 @@ const PlatformStory = () => {
 
     useEffect(() => {
         return activeIndex.on('change', (latest) => {
-            // Use floor instead of round: a platform activates as soon as its
-            // slice begins, and only gives way at the next exact boundary.
             setCurrent(Math.min(Math.floor(latest + 0.1), count - 1));
         });
     }, [activeIndex, count]);
 
     return (
-        /*
-         * FIX 3 — height must be strictly larger than the sticky viewport
-         * to create scrollable room.  400 vh for 4 platforms (100 vh each).
-         */
-        <section ref={containerRef} className="relative h-[400vh] bg-black">
+        <section on ref={containerRef} className="relative h-[400vh] bg-black">
             <div className="sticky top-0 flex h-screen items-center overflow-hidden">
                 <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-20 px-6 lg:grid-cols-2">
-
-                    {/* LEFT CONTENT
-                        FIX 4 — the original container had no height, so all the
-                        absolutely-positioned children collapsed to 0 px and were
-                        invisible.  Adding an explicit h-[420px] gives them a
-                        containing block to sit inside.
-                    */}
                     <div className="relative flex flex-col justify-center">
                         <div className="relative h-[420px]">
                             {PLATFORMS.map((item, index) => {
@@ -185,10 +159,6 @@ const PlatformStory = () => {
                                 return (
                                     <motion.div
                                         key={index}
-                                        /*
-                                         * FIX 5 — use animate with a visible pointer-events
-                                         * guard so inactive slides don't intercept clicks.
-                                         */
                                         animate={{
                                             opacity: active ? 1 : 0,
                                             y: active ? 0 : 30,
@@ -197,21 +167,11 @@ const PlatformStory = () => {
                                         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                                         className="absolute inset-0 flex flex-col justify-center"
                                     >
-                                        <div
-                                            className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2"
-                                            style={{ color: item.accent }}
-                                        >
-                                            <item.icon className="size-4" />
-                                            <span className="text-xs uppercase tracking-[0.2em]">
-                                                {item.label}
-                                            </span>
-                                        </div>
-
                                         <h2 className="mb-6 text-5xl font-medium leading-[1.05] tracking-tight text-white">
                                             {item.title}
                                         </h2>
 
-                                        <p className="text-lg leading-relaxed text-white/45">
+                                        <p className="text-sm md:text-base leading-relaxed text-white/45 max-w-2xl font-normal tracking-tight">
                                             {item.description}
                                         </p>
                                     </motion.div>
@@ -219,7 +179,6 @@ const PlatformStory = () => {
                             })}
                         </div>
 
-                        {/* Progress dots — visual feedback for scroll position */}
                         <div className="mt-8 flex gap-2">
                             {PLATFORMS.map((_, i) => (
                                 <motion.div
@@ -266,7 +225,7 @@ const PlatformStory = () => {
                                                 className="h-full w-full object-cover"
                                             />
 
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                                            <div className="absolute inset-0 bg-linear-to-t from-black via-black/20 to-transparent" />
 
                                             <motion.div
                                                 animate={{
@@ -276,23 +235,14 @@ const PlatformStory = () => {
                                                 transition={{ duration: 0.7, delay: 0.2 }}
                                                 className="absolute bottom-0 left-0 p-8"
                                             >
-                                                <div
-                                                    className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-4 py-2 backdrop-blur-xl"
+                                                <Badge
+                                                    variant="outline"
+                                                    className="mb-4 h-auto gap-2 rounded-full border-white/10 bg-black/30 px-4 py-2 backdrop-blur-xl text-xs font-normal tracking-[0.2em] [&>svg]:size-4!"
                                                     style={{ color: item.accent }}
                                                 >
                                                     <item.icon className="size-4" />
-                                                    <span className="text-xs uppercase tracking-[0.2em]">
-                                                        {item.label}
-                                                    </span>
-                                                </div>
-
-                                                <h3 className="mb-3 text-3xl font-medium text-white">
                                                     {item.label}
-                                                </h3>
-
-                                                <p className="max-w-md text-sm leading-relaxed text-white/70">
-                                                    {item.description}
-                                                </p>
+                                                </Badge>
                                             </motion.div>
                                         </div>
                                     </motion.div>
@@ -320,7 +270,7 @@ const Feature2 = () => {
                             assistance experience
                         </span>
                     </h2>
-                    <p className="mt-8 max-w-2xl text-lg leading-relaxed text-white/45">
+                    <p className="mt-8 max-w-2xl text-sm md:text-base leading-relaxed text-white/45 font-normal tracking-tight">
                         Scroll through a fully immersive product storytelling
                         experience designed for modern AI-powered interview workflows.
                     </p>

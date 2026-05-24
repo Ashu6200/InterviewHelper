@@ -7,7 +7,7 @@ const Hero = () => {
   return (
     <div className="relative">
       <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full bg-[#8b5cf6]/15 blur-[180px] pointer-events-none" />
-      <section className="overflow-hidden py-16 md:py-28 mx-auto max-w-7xl px-6 lg:px-0">
+      <section className="overflow-hidden py-12 md:py-18 mx-auto max-w-7xl px-6 lg:px-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
