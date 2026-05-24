@@ -63,7 +63,7 @@ const FAQ = () => {
     <section
       ref={sectionRef}
       id="faq"
-      className="py-24 md:py-32 px-6 md:px-12 bg-black text-white overflow-hidden relative border-t border-white/[0.06]"
+      className="py-24 md:py-32 px-6 md:px-12 bg-black text-white overflow-hidden relative border-t border-white/6"
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 md:gap-20 relative z-10">
         {/* Left side — Header */}
@@ -156,7 +156,7 @@ const FAQ = () => {
               >
                 <AccordionItem
                   value={`item-${i}`}
-                  className="border-b border-white/[0.06] px-0 transition-colors duration-200 hover:border-white/[0.1]"
+                  className="border-b border-white/6 px-0 transition-colors duration-200 hover:border-white/10"
                 >
                   <AccordionTrigger className="text-sm md:text-base font-semibold py-5 hover:no-underline hover:text-white/85 transition-all duration-200 text-white text-left">
                     <span className="flex items-start gap-4">
