@@ -99,7 +99,7 @@ const CapabilityCard = ({ capability, index }) => {
                 y: -5,
                 transition: { type: 'spring', stiffness: 300, damping: 20 },
             }}
-            className="group relative overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] p-7"
+            className="group relative overflow-hidden rounded-lg border border-white/10 bg-white/3 p-7"
         >
             <div
                 className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
