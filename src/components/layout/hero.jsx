@@ -5,9 +5,8 @@ import { motion } from 'framer-motion';
 
 const Hero = () => {
   return (
-    <div className="relative">
-      <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full bg-[#8b5cf6]/15 blur-[180px] pointer-events-none" />
-      <section className="overflow-hidden py-12 md:py-18 mx-auto max-w-7xl px-6 lg:px-0">
+    <div className="relative overflow-hidden">
+      <section className="overflow-hidden py-10 md:py-14 mx-auto max-w-7xl px-6 lg:px-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -47,6 +46,7 @@ const Hero = () => {
             className="w-full h-full object-cover pointer-events-none select-none block rounded-2xl border border-white/10"
           />
         </motion.div>
+        <div className="absolute bottom-[-200px] left-1/2 -translate-x-1/2 w-[1200px] h-[300px] rounded-full bg-[#C4D9FF]/60 blur-[180px] pointer-events-none" />
       </section>
     </div>
   );

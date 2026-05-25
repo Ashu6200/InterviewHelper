@@ -41,7 +41,7 @@ const FEATURES = [
     ],
     image: '/images/interview-2.png',
     icon: LayoutDashboard,
-    color: '#8b5cf6',
+    color: '#C4D9FF',
   },
   {
     step: '03',
@@ -101,8 +101,8 @@ const Feature = ({ className }) => {
   return (
     <section
       ref={containerRef}
-      className={cn('relative bg-black px-6 text-white border-t border-white/6 ', className)}
-      style={{ minHeight: `${SECTION_VH}vh` }}
+      className={cn('relative bg-black px-6 text-white border-t border-white/6 lg:min-h-(--section-vh)', className)}
+      style={{ '--section-vh': `${SECTION_VH}vh`, '--grid-vh': `${GRID_VH}vh` }}
     >
       <div className="mx-auto max-w-7xl pt-32 pb-0">
         <div className="mb-24 text-start">
@@ -116,8 +116,7 @@ const Feature = ({ className }) => {
         </div>
 
         <div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24"
-          style={{ minHeight: `${GRID_VH}vh` }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 lg:min-h-(--grid-vh)"
         >
           {/* ── Left: Feature list ── */}
           <div className="flex flex-col h-full">
@@ -245,6 +244,23 @@ const Feature = ({ className }) => {
                             <span>Learn more about {feature.badge.toLowerCase()}</span>
                             <ChevronRight className="size-3 transition-transform group-hover/link:translate-x-0.5" />
                           </div>
+                          <div className="lg:hidden mt-6 relative overflow-hidden rounded-xl border border-white/6 bg-[#0a0a0a]">
+                            <div className="relative h-[280px] sm:h-[350px] w-full overflow-hidden">
+                              <AnimatePresence>
+                                <motion.img
+                                  key={FEATURES[i].image}
+                                  src={FEATURES[i].image}
+                                  alt={FEATURES[i].title}
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: 1 }}
+                                  exit={{ opacity: 0 }}
+                                  transition={{ duration: 0.4, ease: 'easeInOut' }}
+                                  className="absolute inset-0 h-full w-full object-cover"
+                                  draggable={false}
+                                />
+                              </AnimatePresence>
+                            </div>
+                          </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -310,7 +326,7 @@ const Feature = ({ className }) => {
           </div>
 
           {/* ── Mobile image ── */}
-          <div className="lg:hidden relative overflow-hidden rounded-xl border border-white/6 bg-[#0a0a0a]">
+          <div className="hidden relative overflow-hidden rounded-xl border border-white/6 bg-[#0a0a0a]">
             <div className="relative h-[280px] sm:h-[350px] w-full overflow-hidden">
               <AnimatePresence>
                 <motion.img

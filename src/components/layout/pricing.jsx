@@ -61,7 +61,7 @@ const Pricing = () => {
       ],
       cta: 'Start free trial',
       highlighted: true,
-      accent: '#8b5cf6',
+      accent: '#C4D9FF',
     },
     {
       name: 'Enterprise',
@@ -168,7 +168,7 @@ const Pricing = () => {
                     transition={{ duration: 0.4, delay: 0.3 }}
                     className="absolute -top-3 left-1/2 -translate-x-1/2 z-10"
                   >
-                    <span className="bg-[#8b5cf6] text-white px-3.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider shadow-[0_0_20px_rgba(139,92,246,0.3)]">
+                    <span className="bg-[#C4D9FF] text-white px-3.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider shadow-[0_0_20px_rgba(139,92,246,0.3)]">
                       Most Popular
                     </span>
                   </motion.div>

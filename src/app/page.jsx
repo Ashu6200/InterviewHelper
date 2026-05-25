@@ -10,7 +10,8 @@ import FeatureSection from '@/components/layout/feature2';
 
 export default function Home() {
   return (
-    <main className='min-h-screen bg-black'>
+    <main className='min-h-screen bg-black relative'>
+
       <Header />
       <Hero />
       <FeatureSection />

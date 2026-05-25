@@ -22,10 +22,12 @@ export default function RootLayout({ children }) {
     <html
       lang='en'
       className={`${inter.variable} ${geistMono.variable} h-full antialiased dark`}
+      suppressHydrationWarning={true}
     >
       <body
         className='relative min-h-full flex flex-col bg-black '
         suppressHydrationWarning={true}
+        data-qb-installed="true"
       >
         {children}
       </body>

@@ -28,8 +28,8 @@ const Subscribe = () => {
         >
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.08),transparent_70%)] pointer-events-none" />
           <div className="relative z-10 mb-8">
-            <span className="inline-flex items-center gap-2 text-[10px] font-semibold tracking-wider text-[#8b5cf6] uppercase bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 rounded-full px-3.5 py-1.5">
-              <Sparkles className="size-3 text-[#8b5cf6]" />
+            <span className="inline-flex items-center gap-2 text-[10px] font-semibold tracking-wider text-[#C4D9FF] uppercase bg-[#C4D9FF]/10 border border-[#C4D9FF]/20 rounded-full px-3.5 py-1.5">
+              <Sparkles className="size-3 text-[#C4D9FF]" />
               Start your journey today
             </span>
           </div>

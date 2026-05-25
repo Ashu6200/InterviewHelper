@@ -23,7 +23,7 @@ import { Badge } from '@/components/ui/badge';
 const PLATFORMS = [
     {
         label: 'Google Meet',
-        accent: '#8b5cf6',
+        accent: '#C4D9FF',
         img: '/images/interview-2.png',
         icon: Video,
         title: 'Built for modern remote interviews',
@@ -32,7 +32,7 @@ const PLATFORMS = [
     },
     {
         label: 'Zoom',
-        accent: '#8b5cf6',
+        accent: '#C4D9FF',
         img: '/images/interview-3.png',
         icon: Monitor,
         title: 'Ultra-fast response generation',
@@ -41,7 +41,7 @@ const PLATFORMS = [
     },
     {
         label: 'Microsoft Teams',
-        accent: '#8b5cf6',
+        accent: '#C4D9FF',
         img: '/images/interview-1.png',
         icon: Users,
         title: 'Enterprise ready compatibility',
@@ -50,7 +50,7 @@ const PLATFORMS = [
     },
     {
         label: 'Webex',
-        accent: '#8b5cf6',
+        accent: '#C4D9FF',
         img: '/images/interview-4.png',
         icon: Presentation,
         title: 'Invisible interview assistance',
@@ -109,7 +109,7 @@ const CapabilityCard = ({ capability, index }) => {
                 }}
             />
             <div className="relative z-10">
-                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-[#8b5cf6]/10 text-[#8b5cf6]">
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-[#C4D9FF]/10 text-[#C4D9FF]">
                     <capability.icon className="size-5" />
                 </div>
                 <h3 className="mb-3 text-lg font-medium text-white">
@@ -130,32 +130,28 @@ const PlatformStory = () => {
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
-        offset: ['start start', 'end start'],
+        offset: ['start start', 'end end'], // ✅ Fix #2: covers exact sticky range
     });
 
-    const segmentSize = 1 / count;
-    const inputRange = PLATFORMS.map((_, i) => i * segmentSize);
-    const outputRange = PLATFORMS.map((_, i) => i);
-
-    const activeIndex = useTransform(scrollYProgress, inputRange, outputRange, {
-        clamp: true,
-    });
-
+    // ✅ Simplified — no useTransform needed
     useEffect(() => {
-        return activeIndex.on('change', (latest) => {
-            setCurrent(Math.min(Math.floor(latest + 0.1), count - 1));
+        return scrollYProgress.on('change', (v) => {
+            const idx = Math.min(Math.floor(v * count), count - 1);
+            setCurrent(Math.max(0, idx));
         });
-    }, [activeIndex, count]);
+    }, [scrollYProgress, count]);
 
     return (
-        <section on ref={containerRef} className="relative h-[400vh] bg-black">
-            <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-                <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-20 px-6 lg:grid-cols-2">
+
+        <section ref={containerRef} className="relative h-[300vh] md:h-[400vh] xl:h-[500vh]  bg-black">
+            <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
+                <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-8 md:gap-20 px-6 lg:grid-cols-2">
+
+                    {/* LEFT TEXT */}
                     <div className="relative flex flex-col justify-center">
-                        <div className="relative h-[420px]">
+                        <div className="relative h-[180px] sm:h-[220px] md:h-[420px]">
                             {PLATFORMS.map((item, index) => {
                                 const active = current === index;
-
                                 return (
                                     <motion.div
                                         key={index}
@@ -167,11 +163,10 @@ const PlatformStory = () => {
                                         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                                         className="absolute inset-0 flex flex-col justify-center"
                                     >
-                                        <h2 className="mb-6 text-5xl font-medium leading-[1.05] tracking-tight text-white">
+                                        <h2 className="mb-3 md:mb-6 text-3xl md:text-5xl font-medium leading-[1.05] tracking-tight text-white">
                                             {item.title}
                                         </h2>
-
-                                        <p className="text-sm md:text-base leading-relaxed text-white/45 max-w-2xl font-normal tracking-tight">
+                                        <p className="text-xs md:text-base leading-relaxed text-white/45 max-w-2xl font-normal tracking-tight">
                                             {item.description}
                                         </p>
                                     </motion.div>
@@ -179,7 +174,7 @@ const PlatformStory = () => {
                             })}
                         </div>
 
-                        <div className="mt-8 flex gap-2">
+                        <div className="mt-4 md:mt-8 flex gap-2">
                             {PLATFORMS.map((_, i) => (
                                 <motion.div
                                     key={i}
@@ -188,7 +183,7 @@ const PlatformStory = () => {
                                         opacity: current === i ? 1 : 0.3,
                                     }}
                                     transition={{ duration: 0.35 }}
-                                    className="h-1.5 rounded-full bg-[#8b5cf6]"
+                                    className="h-1.5 rounded-full bg-[#C4D9FF]"
                                 />
                             ))}
                         </div>
@@ -196,10 +191,9 @@ const PlatformStory = () => {
 
                     {/* RIGHT IMAGE */}
                     <div className="relative flex items-center justify-center">
-                        <div className="relative h-[560px] max-h-[620px] w-full max-w-3xl overflow-hidden rounded-lg border border-white/10 bg-white/3 shadow-2xl">
+                        <div className="relative h-[250px] sm:h-[350px] md:h-[560px] max-h-[620px] w-full max-w-3xl overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] shadow-2xl">
                             {PLATFORMS.map((item, index) => {
                                 const active = current === index;
-
                                 return (
                                     <motion.div
                                         key={index}
@@ -224,9 +218,7 @@ const PlatformStory = () => {
                                                 transition={{ duration: 6, ease: 'easeOut' }}
                                                 className="h-full w-full object-cover"
                                             />
-
-                                            <div className="absolute inset-0 bg-linear-to-t from-black via-black/20 to-transparent" />
-
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
                                             <motion.div
                                                 animate={{
                                                     opacity: active ? 1 : 0,
@@ -237,7 +229,7 @@ const PlatformStory = () => {
                                             >
                                                 <Badge
                                                     variant="outline"
-                                                    className="mb-4 h-auto gap-2 rounded-full border-white/10 bg-black/30 px-4 py-2 backdrop-blur-xl text-xs font-normal tracking-[0.2em] [&>svg]:size-4!"
+                                                    className="mb-4 h-auto gap-2 rounded-full border-white/10 bg-black/30 px-4 py-2 backdrop-blur-xl text-xs font-normal tracking-[0.2em] [&>svg]:!size-4"
                                                     style={{ color: item.accent }}
                                                 >
                                                     <item.icon className="size-4" />
@@ -250,11 +242,144 @@ const PlatformStory = () => {
                             })}
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
     );
 };
+// const PlatformStory = () => {
+//     const containerRef = useRef(null);
+//     const [current, setCurrent] = useState(0);
+//     const count = PLATFORMS.length;
+
+//     const { scrollYProgress } = useScroll({
+//         target: containerRef,
+//         offset: ['start start', 'end start'],
+//     });
+
+//     const segmentSize = 1 / count;
+//     const inputRange = PLATFORMS.map((_, i) => i * segmentSize);
+//     const outputRange = PLATFORMS.map((_, i) => i);
+
+//     const activeIndex = useTransform(scrollYProgress, inputRange, outputRange, {
+//         clamp: true,
+//     });
+
+//     useEffect(() => {
+//         return activeIndex.on('change', (latest) => {
+//             setCurrent(Math.min(Math.floor(latest + 0.1), count - 1));
+//         });
+//     }, [activeIndex, count]);
+
+//     return (
+//         <section ref={containerRef} className="relative h-[500vh] overflow-x-hidden bg-black">
+//             <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+//                 <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-8 md:gap-20 px-6 lg:grid-cols-2">
+//                     <div className="relative flex flex-col justify-center">
+//                         <div className="relative h-[180px] sm:h-[220px] md:h-[420px]">
+//                             {PLATFORMS.map((item, index) => {
+//                                 const active = current === index;
+
+//                                 return (
+//                                     <motion.div
+//                                         key={index}
+//                                         animate={{
+//                                             opacity: active ? 1 : 0,
+//                                             y: active ? 0 : 30,
+//                                             pointerEvents: active ? 'auto' : 'none',
+//                                         }}
+//                                         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+//                                         className="absolute inset-0 flex flex-col justify-center"
+//                                     >
+//                                         <h2 className="mb-3 md:mb-6 text-3xl md:text-5xl font-medium leading-[1.05] tracking-tight text-white">
+//                                             {item.title}
+//                                         </h2>
+
+//                                         <p className="text-xs md:text-base leading-relaxed text-white/45 max-w-2xl font-normal tracking-tight">
+//                                             {item.description}
+//                                         </p>
+//                                     </motion.div>
+//                                 );
+//                             })}
+//                         </div>
+
+//                         <div className="mt-4 md:mt-8 flex gap-2">
+//                             {PLATFORMS.map((_, i) => (
+//                                 <motion.div
+//                                     key={i}
+//                                     animate={{
+//                                         width: current === i ? 24 : 6,
+//                                         opacity: current === i ? 1 : 0.3,
+//                                     }}
+//                                     transition={{ duration: 0.35 }}
+//                                     className="h-1.5 rounded-full bg-[#C4D9FF]"
+//                                 />
+//                             ))}
+//                         </div>
+//                     </div>
+
+//                     {/* RIGHT IMAGE */}
+//                     <div className="relative flex items-center justify-center">
+//                         <div className="relative h-[250px] sm:h-[350px] md:h-[560px] max-h-[620px] w-full max-w-3xl overflow-hidden rounded-lg border border-white/10 bg-white/3 shadow-2xl">
+//                             {PLATFORMS.map((item, index) => {
+//                                 const active = current === index;
+
+//                                 return (
+//                                     <motion.div
+//                                         key={index}
+//                                         initial={false}
+//                                         animate={{
+//                                             opacity: active ? 1 : 0,
+//                                             scale: active ? 1 : 1.08,
+//                                             filter: active ? 'blur(0px)' : 'blur(20px)',
+//                                         }}
+//                                         transition={{
+//                                             opacity: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+//                                             scale: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
+//                                             filter: { duration: 0.9 },
+//                                         }}
+//                                         className="absolute inset-0"
+//                                     >
+//                                         <div className="relative h-full w-full overflow-hidden">
+//                                             <motion.img
+//                                                 src={item.img}
+//                                                 alt={item.label}
+//                                                 animate={{ scale: active ? 1 : 1.12 }}
+//                                                 transition={{ duration: 6, ease: 'easeOut' }}
+//                                                 className="h-full w-full object-cover"
+//                                             />
+
+//                                             <div className="absolute inset-0 bg-linear-to-t from-black via-black/20 to-transparent" />
+
+//                                             <motion.div
+//                                                 animate={{
+//                                                     opacity: active ? 1 : 0,
+//                                                     y: active ? 0 : 30,
+//                                                 }}
+//                                                 transition={{ duration: 0.7, delay: 0.2 }}
+//                                                 className="absolute bottom-0 left-0 p-8"
+//                                             >
+//                                                 <Badge
+//                                                     variant="outline"
+//                                                     className="mb-4 h-auto gap-2 rounded-full border-white/10 bg-black/30 px-4 py-2 backdrop-blur-xl text-xs font-normal tracking-[0.2em] [&>svg]:size-4!"
+//                                                     style={{ color: item.accent }}
+//                                                 >
+//                                                     <item.icon className="size-4" />
+//                                                     {item.label}
+//                                                 </Badge>
+//                                             </motion.div>
+//                                         </div>
+//                                     </motion.div>
+//                                 );
+//                             })}
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>
+//         </section>
+//     );
+// };
 
 const Feature2 = () => {
     return (

@@ -9,7 +9,7 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      setScrolled(window.scrollY > 100);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -17,9 +17,9 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky top-0 left-0 right-0 z-[100] transition-all duration-300 ease-in-out ${scrolled
-          ? 'backdrop-blur-md bg-black/75 border-b border-white/[0.06]'
-          : 'bg-transparent border-b border-transparent'
+      className={`sticky top-0 left-0 right-0 z-100 transition-all duration-300 ease-in-out border-b ${scrolled
+        ? 'backdrop-blur-md bg-black/70 border-white/10'
+        : 'bg-transparent border-transparent'
         }`}
     >
       <nav className='mx-6 lg:mx-auto max-w-7xl flex items-center justify-between py-5'>
@@ -55,7 +55,7 @@ const Header = () => {
           </Link>
           <Link
             href='/signup'
-            className='bg-[#8b5cf6] text-white no-underline font-medium py-1.5 px-4 rounded-full transition-all duration-200 hover:bg-[#7c3aed]'
+            className='bg-[#C4D9FF] text-white no-underline font-medium py-1.5 px-4 rounded-full transition-all duration-200 hover:bg-[#7c3aed]'
           >
             Sign up
           </Link>
