@@ -17,14 +17,14 @@ const Subscribe = () => {
 
   return (
     <section
-      className="py-24 md:py-32 px-6 md:px-12 bg-black text-white relative border-t border-white/[0.06]"
+      className="py-24 md:py-32 px-6 md:px-12 bg-black text-white relative border-t border-white/6"
     >
       <div ref={cardRef} className="max-w-5xl mx-auto relative">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="border border-white/[0.06] rounded-2xl p-12 md:p-20 text-center bg-white/[0.015] relative overflow-hidden"
+          className="border border-white/6 rounded-2xl p-12 md:p-20 text-center bg-white/1.5 relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.08),transparent_70%)] pointer-events-none" />
           <div className="relative z-10 mb-8">

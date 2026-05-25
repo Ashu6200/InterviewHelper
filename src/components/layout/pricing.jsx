@@ -91,7 +91,7 @@ const Pricing = () => {
     <section
       ref={sectionRef}
       id="pricing"
-      className="py-24 md:py-32 px-6 md:px-12 bg-black overflow-hidden relative border-t border-white/[0.06]"
+      className="py-24 md:py-32 px-6 md:px-12 bg-black overflow-hidden relative border-t border-white/6"
     >
       <div className="max-w-7xl mx-auto flex flex-col relative z-10">
         <motion.div
@@ -129,7 +129,7 @@ const Pricing = () => {
           <Switch
             checked={isAnnual}
             onCheckedChange={setIsAnnual}
-            className="data-[checked]:bg-white data-[unchecked]:bg-white/20"
+            className="data-checked:bg-white data-unchecked:bg-white/20"
           />
           <span
             className={cn(
@@ -177,16 +177,16 @@ const Pricing = () => {
 
               <Card
                 className={cn(
-                  'h-full flex flex-col transition-all duration-300 border-white/[0.06] bg-white/[0.015] backdrop-blur-sm overflow-hidden',
+                  'h-full flex flex-col transition-all duration-300 border-white/6 bg-white/1.5 backdrop-blur-sm overflow-hidden',
                   plan.highlighted
-                    ? 'border-white/15 bg-white/[0.03]'
-                    : 'hover:bg-white/[0.03] hover:border-white/[0.1]'
+                    ? 'border-white/15 bg-white/3'
+                    : 'hover:bg-white/3 hover:border-white/10'
                 )}
               >
                 <CardHeader className="pt-8 px-8">
                   <div className="flex items-center gap-3 mb-4">
                     <div
-                      className="flex size-8 items-center justify-center rounded-lg border border-white/[0.06]"
+                      className="flex size-8 items-center justify-center rounded-lg border border-white/6"
                       style={{ backgroundColor: `${plan.accent}12` }}
                     >
                       <plan.icon
@@ -222,7 +222,7 @@ const Pricing = () => {
                   </CardDescription>
                 </CardHeader>
 
-                <CardContent className="flex-grow px-8 py-6 border-t border-white/[0.04] mt-4">
+                <CardContent className="grow px-8 py-6 border-t border-white/4 mt-4">
                   <ul className="space-y-4">
                     {plan.features.map((feature, fi) => (
                       <li
@@ -245,7 +245,7 @@ const Pricing = () => {
                       'w-full rounded-full py-5 transition-all duration-200 font-medium text-xs group h-auto',
                       plan.highlighted
                         ? 'bg-white text-black hover:bg-white/90'
-                        : 'bg-white/[0.06] text-white hover:bg-white/[0.1] border border-white/[0.06]'
+                        : 'bg-white/6 text-white hover:bg-white/10 border border-white/6'
                     )}
                   >
                     {plan.cta}

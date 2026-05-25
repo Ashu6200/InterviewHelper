@@ -191,7 +191,7 @@ const PlatformStory = () => {
 
                     {/* RIGHT IMAGE */}
                     <div className="relative flex items-center justify-center">
-                        <div className="relative h-[250px] sm:h-[350px] md:h-[560px] max-h-[620px] w-full max-w-3xl overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] shadow-2xl">
+                        <div className="relative h-[250px] sm:h-[350px] md:h-[560px] max-h-[620px] w-full max-w-3xl overflow-hidden rounded-lg border border-white/10 bg-white/3 shadow-2xl">
                             {PLATFORMS.map((item, index) => {
                                 const active = current === index;
                                 return (
@@ -218,7 +218,7 @@ const PlatformStory = () => {
                                                 transition={{ duration: 6, ease: 'easeOut' }}
                                                 className="h-full w-full object-cover"
                                             />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                                            <div className="absolute inset-0 bg-linear-to-t from-black via-black/20 to-transparent" />
                                             <motion.div
                                                 animate={{
                                                     opacity: active ? 1 : 0,
@@ -229,7 +229,7 @@ const PlatformStory = () => {
                                             >
                                                 <Badge
                                                     variant="outline"
-                                                    className="mb-4 h-auto gap-2 rounded-full border-white/10 bg-black/30 px-4 py-2 backdrop-blur-xl text-xs font-normal tracking-[0.2em] [&>svg]:!size-4"
+                                                    className="mb-4 h-auto gap-2 rounded-full border-white/10 bg-black/30 px-4 py-2 backdrop-blur-xl text-xs font-normal tracking-[0.2em] [&>svg]:size-4!"
                                                     style={{ color: item.accent }}
                                                 >
                                                     <item.icon className="size-4" />
